@@ -12,7 +12,37 @@ package main
 import "fmt"
 
 func main() {
-	testTwoList()
+	// 不能这样子创建测试链表，因为这样每个结点的地址不一样，实际上根本没有相交
+	// listA := &ListNode{2, &ListNode{6, &ListNode{4, nil}}}
+	// listB := &ListNode{1, &ListNode{5, &ListNode{6, &ListNode{4, nil}}}}
+	// 创建链表A
+	node1 := &ListNode{Val: 2, Next: nil}
+	node2 := &ListNode{Val: 6, Next: nil}
+	node3 := &ListNode{Val: 4, Next: nil}
+	node1.Next = node2
+	node2.Next = node3
+	// 创建链表B
+	node4 := &ListNode{Val: 1, Next: nil}
+	node5 := &ListNode{Val: 5, Next: nil}
+	node4.Next = node5
+	// 使链表B与链表A相交于节点2    2 6  4
+	node5.Next = node2 //      1 5 /
+
+	// 调用函数
+	res := getIntersectionNode(node1, node4)
+
+	// 输出
+	for p := res; p != nil; p = p.Next {
+		fmt.Print(p.Val, " ")
+	}
+	fmt.Println()
+	// 调用函数
+	resForHash := getIntersectionNodeForHash(node1, node4)
+
+	// 输出
+	for p := resForHash; p != nil; p = p.Next {
+		fmt.Print(p.Val, " ")
+	}
 }
 
 type ListNode struct {
@@ -53,33 +83,4 @@ func getIntersectionNodeForHash(headA, headB *ListNode) *ListNode {
 		}
 	}
 	return nil
-}
-
-func testTwoList() {
-	// 创建链表A
-	node1 := &ListNode{Val: 2, Next: nil}
-	node2 := &ListNode{Val: 6, Next: nil}
-	node3 := &ListNode{Val: 4, Next: nil}
-	node1.Next = node2
-	node2.Next = node3
-	// 创建链表B
-	node4 := &ListNode{Val: 1, Next: nil}
-	node5 := &ListNode{Val: 5, Next: nil}
-	node4.Next = node5
-	// 使链表B与链表A相交于节点3    2 6  4
-	node5.Next = node3 //       1 5 /
-	// 两个链表相交节点的值
-	intersectionNode := getIntersectionNode(node1, node4)
-	if intersectionNode != nil {
-		fmt.Println("相交节点的值为:", intersectionNode.Val)
-	} else {
-		fmt.Println("链表A与链表B不相交")
-	}
-	intersectionNodeForHash := getIntersectionNodeForHash(node1, node4)
-	if intersectionNodeForHash != nil {
-		fmt.Println("相交节点的值为:", intersectionNode.Val)
-	} else {
-		fmt.Println("链表A与链表B不相交")
-	}
-	return
 }
