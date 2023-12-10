@@ -1,30 +1,64 @@
-// 首先在未排序序列中找到最小（大）元素，存放到排序序列的起始位置
-// 再从剩余未排序元素中继续寻找最小（大）元素，然后放到已排序序列的末尾。
-// 重复第二步，直到所有元素均排序完毕。
 package main
 
-import "fmt"
-
-type uint64Slice []uint64
-
 func main() {
-	numbers := []uint64{5, 23, 1, 6, 7, 9, 2}
-	selectSort(numbers)
-	fmt.Println(numbers)
+	var data = []int{38, 65, 97, 76, 13, 27, 49}
+	selectSort(data)
+	selectSort2(data)
 }
-func selectSort(numbers uint64Slice) {
-	for i := 0; i < len(numbers)-1; i++ {
+
+func selectSort(data []int) []int {
+	n := len(data)
+	// 边界检查
+	if n < 2 {
+		return data
+	}
+	// 遍历无序列表，找到其中最小值，放到i位置。0～n-2（忽略尾，最后剩下的就是最大的）
+	for i := 0; i < n-1; i++ {
+		// 从第一个起，依次比较，获取实际最小值索引
 		min := i
-		for j := i + 1; j < len(numbers); j++ {
-			if numbers[j] < numbers[min] {
-				min = j //找到了最小值的位置
+		for j := i + 1; j < n; j++ {
+			if data[j] < data[min] {
+				min = j
 			}
 		}
-		if i != min {
-			numbers.swap(i, min)
-		} //确保最小值是从前往后排列
+		// 将最小值放有序列表里
+		if min != i {
+			data[i], data[min] = data[min], data[i]
+		}
 	}
+	return data
 }
-func (numbers uint64Slice) swap(i, j int) {
-	numbers[i], numbers[j] = numbers[j], numbers[i]
+
+func selectSort2(data []int) []int {
+	n := len(data)
+	// 边界检查，直接返回
+	if n < 2 {
+		return data
+	}
+	left, right := 0, n-1
+	for left < right {
+		min := left
+		max := right
+		for i := left; i <= right; i++ {
+			// 标记较小值和较大值
+			if data[i] < data[min] {
+				min = i
+			}
+			if data[i] > data[max] {
+				max = i
+			}
+		}
+		// 最小值放最左端
+		data[left], data[min] = data[min], data[left]
+		// 计算得出的最大值在left位置，但是上一步，原来left位置的值被放到min位置上。
+		if max == left {
+			max = min
+		}
+		// 最大值放最右端
+		data[right], data[max] = data[max], data[right]
+		// 缩小无序列表
+		left++
+		right--
+	}
+	return data
 }
