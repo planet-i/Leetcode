@@ -1,31 +1,41 @@
 package main
 
-import "fmt"
-
-type uint64Slice []uint64
-
 func main() {
-	numbers := []uint64{5, 4, 2, 3, 8} // 为什么用uint64的切片
-	sortBubble(numbers)
-	fmt.Println(numbers)
+	var data = []int{38, 65, 97, 76, 13, 27, 49}
+	bubbleSort(data)
 }
 
-func sortBubble(numbers uint64Slice) {
-	length := len(numbers)
-	if length == 0 {
-		return
+func bubbleSort(data []int) []int {
+	n := len(data)
+	if n < 2 {
+		return data
 	}
-	flag := true //
-	for i := 0; i < length-1 && flag; i++ {
-		flag = false
-		for j := 0; j < length-1-i; j++ {
-			if numbers[j] > numbers[j+1] { //大的去后面
-				numbers.swap(j, j+1)
-				flag = true // 有交换 flag为true， 无交换则证明此轮已经有序，flag为flase 跳出循环
+	// n-1趟
+	for i := 0; i < n-1; i++ {
+		for j := 0; j < n-i-1; j++ {
+			if data[j] > data[j+1] {
+				data[j], data[j+1] = data[j+1], data[j]
 			}
 		}
 	}
+	return data
 }
-func (numbers uint64Slice) swap(i, j int) {
-	numbers[i], numbers[j] = numbers[j], numbers[i]
+
+func bubbleSort2(data []int) []int {
+	n := len(data)
+	if n < 2 {
+		return data
+	}
+	// 用来标记是否中间轮次就已经有序了
+	flag := true
+	for i := 0; i < n-1 && flag; i++ {
+		flag = false
+		for j := 0; j < n-1-i; j++ {
+			if data[j] > data[j+1] { // 大的去后面
+				data[j], data[j+1] = data[j+1], data[j]
+				flag = true // 有交换 flag为true，无交换则证明此轮已经有序，flag为flase 跳出循环
+			}
+		}
+	}
+	return data
 }
