@@ -1,10 +1,14 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	var data = []int{38, 65, 97, 76, 13, 27, 49}
 	insertSort(data)
+	var a = IntSlice{38, 65, 97, 76, 13, 27, 49}
+	insertionSort(a, 0, 6)
 }
 
 func insertSort(data []int) []int {
@@ -41,3 +45,27 @@ func insertSort(data []int) []int {
 // 		break
 // 	}
 // }
+
+type IntSlice []int
+
+func (x IntSlice) Len() int           { return len(x) }
+func (x IntSlice) Less(i, j int) bool { return x[i] < x[j] }
+func (x IntSlice) Swap(i, j int)      { x[i], x[j] = x[j], x[i] }
+
+func insertionSort(data IntSlice, a, b int) {
+	for i := a + 1; i < b; i++ {
+		fmt.Println("insert", data[i])
+		for j := i; j > a && data.Less(j, j-1); j-- {
+			fmt.Println("交换", data[j], data[j-1])
+			data.Swap(j, j-1)
+		}
+	}
+}
+
+// [38] 65 97 76 13 27 49
+// [38 65] 97 76 13 27 49
+// [38 65 97] 76 13 27 49
+// [38 65 76 97] 13 27 49
+// [13 38 65 76 97] 27 49
+// [13 27 38 65 76 97] 49
+// [13 27 38 49 65 76 97]
