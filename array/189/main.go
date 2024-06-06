@@ -1,8 +1,13 @@
-/* 189 轮转数组
+/*
+	189 轮转数组
+
 题目: 给定一个整数数组 nums，将数组中的元素向右轮转 k 个位置，其中 k 是非负数。
-	  如果有两个中间结点，则返回第二个中间结点。
+
+	如果有两个中间结点，则返回第二个中间结点。
+
 示例: 输入: nums = [1,2,3,4,5,6,7], k = 3
-	  输出: [5,6,7,1,2,3,4]
+
+	输出: [5,6,7,1,2,3,4]
 */
 package main
 
@@ -107,4 +112,18 @@ func reverse(a []int) {
 	for i, j := 0, len(a)-1; i < j; i, j = i+1, j-1 {
 		a[i], a[j] = a[j], a[i]
 	}
+}
+
+// 方法三
+func reverse3(a []int) {
+	for i, n := 0, len(a); i < n/2; i++ {
+		a[i], a[n-1-i] = a[n-1-i], a[i]
+	}
+}
+
+func rotate3(nums []int, k int) {
+	k %= len(nums)
+	reverse(nums)
+	reverse(nums[:k])
+	reverse(nums[k:])
 }
