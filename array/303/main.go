@@ -81,3 +81,31 @@ func Constructor(nums []int) NumArray {
 func SumRange(left int, right int) int {
 	return res.data[right+1] - res.data[left]
 }
+
+func slidingWindow(s string) {
+	// 用合适的数据结构记录窗口中的数据，根据具体场景变通
+	// 比如说，我想记录窗口中元素出现的次数，就用 map
+	// 我想记录窗口中的元素和，就用 int
+	window := make(map[rune]int)
+
+	left, right := 0, 0
+	// 第一个for：窗口右侧总是小于最长串的长度的
+	for right < len(s) {
+		// end 是将移入窗口的字符
+		var end rune = rune(s[right])
+		// 增大窗口
+		right++
+		// 进行窗口内数据的一系列更新和判断
+		window[end]++
+
+		// 第二个for：左侧窗口该缩小的条件
+		for left < right {
+			// start 是将移出窗口的字符
+			var start rune = rune(s[left])
+			// 缩小窗口
+			left++
+			// 进行窗口内数据的一系列更新和判断
+			window[start]--
+		}
+	}
+}
